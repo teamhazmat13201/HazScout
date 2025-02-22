@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hazscout Predictions</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <style>
+        body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+    </style>
+</head>
+<body>
+    <h1>Results!</h1>
+    <p>Remember that these results are not accurate as they only take OPR into consideration in the calculations.</p>
+    <div id="winning_alliance_div" class = 'center full_width'>
+        <h3>It's a</h3>
+        <h1 id="winning_alliance_h1" style = 'top: 0; '></h1>
+    </div>
+
+    <a class="button" style = 'width: 15%' href = '/prediction'>Make another Prediction</a>
+    <br>
+
+    <footer>Official Data from <a href = 'https://ftc-events.firstinspires.org/services/API'>FIRST</a></footer>
+    <script>
+        var winning_alliance = "{{ winning_alliance }}";
+
+        if (winning_alliance == 'red'){
+            document.getElementById("winning_alliance_div").classList.add("red");
+            document.getElementById("winning_alliance_h1").innerText = "RED VICTORY!";
+        } else if (winning_alliance == 'blue'){
+            document.getElementById("winning_alliance_div").classList.add("blue"); // Added missing class
+            document.getElementById("winning_alliance_h1").innerText = "BLUE VICTORY!";
+        } else {
+            document.getElementById("winning_alliance_div").classList.add("tie");
+            document.getElementById("winning_alliance_h1").innerText = "TIE!";
+        }
+    </script>
+
+</body>
+</html>

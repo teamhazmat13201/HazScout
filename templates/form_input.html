@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hazscout Search</title>
+    <link rel="stylesheet" href = "{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <h1>HazScout Search</h1>
+    <p>Gather information on teams you don't know about</p>
+    <br>
+    <h2></h2>
+    <form method = 'POST' autocomplete="off">
+        <input placeholder = 'enter team number' type = 'number' name = 'teamNumber' size = "50">
+        <br><br>
+        <input type = 'submit' class = 'submit'>
+    </form>
+
+</body>
+</html>

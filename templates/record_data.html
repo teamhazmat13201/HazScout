@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Record Data - Hazscout</title>
+    <link rel="stylesheet" href = "{{ url_for('static', filename='main.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Record Data</h1>
+        <label for = "teamNum">Team Number:</label>
+        <input id = 'teamNum' name = 'teamNum' placeholder="Team Number" type = 'number'>
+        <br>
+        <label for = "matchNum">Match Number:</label>
+        <input id = 'matchNum' name = 'matchNum' placeholder="Match Number" type = 'number'>
+        <br>
+        <fieldset>
+            <legend>Auto</legend>
+            <div>
+                <label for = 'samplesHighBucketAuto'>Samples in High Bucket: </label>
+                <input id = 'samplesHighBucketAuto' name = 'samplesHighBucketAuto' value = '0' type = 'number' min = '0'><br><br>
+
+                <label for = 'samplesLowBucketAuto'>Samples in Low Bucket: </label>
+                <input id = 'samplesLowBucketAuto' name = 'samplesLowBucketAuto' value = '0' type = 'number' min = '0'><br><br>
+
+                <label for = 'NetZoneAuto'>Samples in Net Zone: </label>
+                <input id = 'NetZoneAuto' name = 'NetZoneAuto' value = '0' type = 'number' min = '0'><br><br>
+
+                <label for = 'HighRungAuto'>Specimen in High Rung: </label>
+                <input id = 'HighRungAuto' name = 'HighRungAuto' value = '0' type = 'number' min = '0'><br><br>
+
+                <label for = 'LowRungAuto'>Specimen in Low Rung: </label>
+                <input id = 'LowRungAuto' name = 'LowRungAuto' value = '0' type = 'number' min = '0'><br><br>
+
+
+
+    
+  </div>
+  <div>
+    <input type="radio" id="no_park" name="park" value="0" checked />
+    <label for="no_park">No Park (0 points)</label>
+  </div>
+            <div>
+    <input type="radio" id="observation_zone_park" name="park" value="0" />
+    <label for="observation_zone_park">Observation Zone (3 points)</label>
+  </div>
+            <div>
+    <input type="radio" id="level1park" name="park" value="3" />
+    <label for="level1park">Submersible w Level 1 climb (3 points)</label>
+  </div>
+        </fieldset>
+<br>
+
+        <fieldset>
+            <legend>Teleop & Endgame (Don't Include Points from Autonomous)</legend>
+            <label for = 'samplesHighBucket'>Samples in High Bucket: </label>
+                <input id = 'samplesHighBucket' name = 'samplesHighBucket' value = '0' type = 'number' min = '0'><br><br>
+
+                <label for = 'samplesLowBucket'>Samples in Low Bucket: </label>
+                <input id = 'samplesLowBucket' name = 'samplesLowBucket' value = '0' type = 'number' min = '0'><br><br>
+
+                <label for = 'NetZone'>Samples in Net Zone: </label>
+                <input id = 'NetZone' name = 'NetZone' value = '0' type = 'number' min = '0'><br><br>
+
+                <label for = 'HighRung'>Specimen in High Rung: </label>
+                <input id = 'HighRung' name = 'HighRung' value = '0' type = 'number' min = '0'><br><br>
+
+                <label for = 'LowRung'>Specimen in Low Rung: </label>
+                <input id = 'LowRung' name = 'LowRung' value = '0' type = 'number' min = '0'><br><br>
+
+
+
+                <div>
+                    <input type="radio" id="no_climb" name="climb" value="0" checked />
+                    <label for="no_climb">No Climb (0 points)</label>
+                  </div>
+                  <div>
+                    <input type="radio" id="parked" name="climb" value="3"  />
+                    <label for="parked">Parked in Observation Zone (3 points)</label>
+                  </div>
+                            <div>
+                    <input type="radio" id="level1_climb" name="climb" value="3" />
+                    <label for="level1_climb">Level 1 Climb (3 points)</label>
+                  </div>
+                            <div>
+                    <input type="radio" id="level2_climb" name="climb" value="15" />
+                    <label for="level2_climb">Level 2 Climb (15 points)</label>
+                  </div>
+
+                  <div>
+                    <input type="radio" id="level3_climb" name="climb" value="30" />
+                    <label for="level3_climb">Level 3 Climb (30 points)</label>
+                  </div>
+                
+                
+        </fieldset>
+        <br>
+
+        <button id="openModalBtn">Show Chart</button>
+    
+
+
+
+
+
+
+
+
+    <div id="chartModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModalBtn">&times;</span>
+            <h2>Team Rankings</h2>
+            <canvas id="myChart"></canvas>
+        </div>
+    </div>
+
+
+
+    <script>
+        // Get Elements
+        const modal = document.getElementById("chartModal");
+        const openModalBtn = document.getElementById("openModalBtn");
+        const closeModalBtn = document.getElementById("closeModalBtn");
+        let chartInstance = null;
+
+        // Open Modal
+        openModalBtn.addEventListener("click", function () {
+            modal.style.display = "block";
+
+            // Destroy previous chart instance if exists
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            // Create Chart
+            const ctx = document.getElementById('myChart').getContext('2d');
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                    datasets: [{
+                        label: 'AVG Points',
+                        data: [12, 19, 3, 5, 2, 3],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.5)',
+                            'rgba(54, 162, 235, 0.5)',
+                            'rgba(255, 206, 86, 0.5)',
+                            'rgba(75, 192, 192, 0.5)',
+                            'rgba(153, 102, 255, 0.5)',
+                            'rgba(255, 159, 64, 0.5)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        });
+
+        // Close Modal
+        closeModalBtn.addEventListener("click", function () {
+            modal.style.display = "none";
+        });
+
+        // Close Modal When Clicking Outside
+        window.addEventListener("click", function (event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+    </script>
+    <script src = '{{ url_for('static', filename='scouting.js') }}'></script>
+</body>
+</html>

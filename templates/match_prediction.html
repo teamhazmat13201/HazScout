@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hazscout Predictions</title>
+    <link rel="stylesheet" href = "{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <h1>Hazmat Predictions</h1>
+    <h2>Predict the Outcome of a Match</h2>
+    <p>This is not accurate because it only accounts a team's OPR(Offensive Power Rating)</p>
+    <form method = 'POST' action = '/prediction'>
+        <div class = 'row'>
+        <div class = 'block padding blue center'>
+            <h3>Blue Team</h3>
+            <input name = 'teamNumber1' type = 'number' placeholder = 'Enter Number for Team 1' class = 'wider padding'>
+            <input name = 'teamNumber2' type = 'number' placeholder = 'Enter Number for Team 2' class = 'wider padding'>
+        </div>
+        <div class = 'block padding red center'>
+            <h3>Red Team</h3>
+            <input name = 'teamNumber3' type = 'number' placeholder = 'Enter Number for Team 3' class = 'wider padding'>
+            <input name = 'teamNumber4' type = 'number' placeholder = 'Enter Number for Team 4' class = 'wider padding'>
+        </div>
+
+        </div>
+        <br>
+        <input type = 'submit' class = 'submit'>
+    </form>
+</body>
+</html>

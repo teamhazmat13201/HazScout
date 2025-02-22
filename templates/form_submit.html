@@ -1,0 +1,82 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Details</title>
+    <link rel="stylesheet" href = "{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <h1>Team Details</h1>
+    <h2>Team: {{ data['teamByNumber']['name'] }} ({{ data['teamByNumber']['number'] }})</h2>
+
+    <p>School Name: {{ data['teamByNumber']['schoolName'] }}</p>
+    <p>Location: {{ data['teamByNumber']['location']['city'] }}, {{ data['teamByNumber']['location']['state'] }}, {{ data['teamByNumber']['location']['country'] }}</p>
+    <p>Rookie Year: {{ data['teamByNumber']['rookieYear'] }}</p>
+    <p>Website: <a href="{{ data['teamByNumber']['website'] }}" target="_blank">{{ data['teamByNumber']['website'] }}</a></p>
+    <h2>Quick Stats</h2>
+    <table>
+        <tbody>
+        <tr>
+            <td><strong>Best Total NP OPR:</strong> {{data['teamByNumber']['quickStats']['tot']['value']}}</td>
+            <td><strong>Rank:</strong> {{data['teamByNumber']['quickStats']['tot']['rank']}}</td>
+        </tr>
+        <tr>
+            <td><strong>Best Auto OPR:</strong> {{data['teamByNumber']['quickStats']['auto']['value']}}</td>
+            <td><strong>Rank:</strong> {{data['teamByNumber']['quickStats']['auto']['rank']}}</td>
+        </tr>
+        <tr>
+            <td><strong>Best Driver Control OPR:</strong> {{data['teamByNumber']['quickStats']['dc']['value']}}</td>
+            <td><strong>Rank:</strong> {{data['teamByNumber']['quickStats']['dc']['rank']}}</td>
+        </tr>
+        <tr>
+            <td><strong>Best Endgame OPR:</strong> {{data['teamByNumber']['quickStats']['eg']['value']}}</td>
+            <td><strong>Rank:</strong> {{data['teamByNumber']['quickStats']['eg']['rank']}}</td>
+        </tr>
+    </tbody>
+    </table>
+
+    <h2>Matches</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Event Name</th>
+                <th>Event Location</th>
+                <th>Alliance</th>
+                <th>Event Code</th>
+                <th>Red Team Total Points</th>
+                <th>Blue Team Total Points</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for match in data['teamByNumber']['matches'] %}
+            <tr>
+                <td>{{ match['match']['event']['name'] }}</td>
+                <td>{{ match['match']['event']['location']['city'] }}, {{ match['match']['event']['location']['state'] }}</td>
+                <td>{{ match['alliance'] }}</td>
+                <td>{{ match['match']['event']['code'] }}</td>
+                <td>{{ match['match']['scores']['red']['totalPoints'] }}</td>
+                <td>{{ match['match']['scores']['blue']['totalPoints'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Awards</h2>
+<ul>
+    {% if data['teamByNumber']['awards'] %}
+        {% for award in data['teamByNumber']['awards'] %}
+            <li>{{ award['type'] }} - {{ award['event']['name'] }} ({{ award['event']['code'] }})</li>
+        {% endfor %}
+    {% else %}
+        <li>No awards found</li>
+    {% endif %}
+</ul>
+
+    <footer>Official Data from <a href = 'https://ftc-events.firstinspires.org/services/API'>FIRST</a></footer>
+</body>
+</html>
+

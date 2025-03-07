@@ -1,4 +1,5 @@
 from flask import *
+from flask_socketio import SocketIO, join_room, leave_room, send
 
 import requests as r
 
@@ -39,12 +40,12 @@ def get_data(teamNum):
         rank
       }
     }
-    matches(season: 2024) { 
+    matches(season: 2024) {
       matchId
       alliance
-      match { 
+      match {
         scores {
-          ... on MatchScores2024 { 
+          ... on MatchScores2024 {
             red {
               autoPark1
               autoPark2
@@ -92,7 +93,7 @@ def get_data(teamNum):
             city
             state
           }
-        } 
+        }
       }
     }
     rookieYear
@@ -120,6 +121,8 @@ def get_data(teamNum):
 
 app = Flask(__name__)
 
+socketio = SocketIO(app)
+
 
 @app.route('/')
 def homepage():
@@ -145,10 +148,12 @@ def form_submit():
         return render_template('/form_submit.html', data = data)
      except:
          return render_template('/error.html')
-#
-# @app.route('/record-data')
-# def record_data():
-#     return render_template('/record_data.html')
+
+@app.route('/record-data')
+def record_data():
+    return render_template('/record_data.html')
+
+
 
 @app.route('/None')
 def none():
@@ -187,6 +192,38 @@ def match_prediction():
 @app.route('/prediction-results', methods = ['POST', 'GET'])
 def prediction_results():
     return render_template('match_prediction_results.html', winning_alliance = winning_alliance)
+
+
+
+
+
+
+
+
+@socketio.on('join')
+def handle_join(data):
+    room = data.get('room')
+
+    if room:
+        join_room(room)
+
+        session['room'] = room
+
+        print(f'a test user has joined room {room}')
+
+
+
+@socketio.on('data')
+def handle_data(data):
+    print("Received data:", data)
+    send(data, room = session.get('room'),broadcast=True)
+
+
+@socketio.on('data-request')
+def data_request(data):
+    room = data['room']
+    socketio.emit('data-response', room = room, include_self = False)
+
 
 
 app.run()

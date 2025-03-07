@@ -188,3 +188,7 @@ color: white;
 #winning_alliance_h1{
     font-size: 50px;
 }
+
+.smaller-text{
+    font-size: 90%;
+}

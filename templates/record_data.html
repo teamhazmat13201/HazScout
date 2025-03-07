@@ -3,108 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <title>Record Data - Hazscout</title>
-    <link rel="stylesheet" href = "{{ url_for('static', filename='main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.0/socket.io.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <h1>Record Data</h1>
-        <label for = "teamNum">Team Number:</label>
-        <input id = 'teamNum' name = 'teamNum' placeholder="Team Number" type = 'number'>
+    <div id='join'>
+      <h1>Join a room first</h1>
+      <p>Enter a room with your fellow scouters. If the room number you entered doesn't have a session active, you will create a new session.</p>
+      
+      
+      <br>
+      <input type='number' id='join-room-input' placeholder = 'Enter a room number.'>
+      <br>
+      <button id='join-room'>Join Room</button>
+    </div>
+
+    <div id='record' hidden='true'>
+      <h1>Record Data</h1>
+        <label for="teamNum">Team Number:</label>
+        <input id='teamNum' name='teamNum' placeholder="Team Number" type='number'>
         <br>
-        <label for = "matchNum">Match Number:</label>
-        <input id = 'matchNum' name = 'matchNum' placeholder="Match Number" type = 'number'>
+        <label for="matchNum">Match Number:</label>
+        <input id='matchNum' name='matchNum' placeholder="Match Number" type='number'>
         <br>
         <fieldset>
             <legend>Auto</legend>
             <div>
-                <label for = 'samplesHighBucketAuto'>Samples in High Bucket: </label>
-                <input id = 'samplesHighBucketAuto' name = 'samplesHighBucketAuto' value = '0' type = 'number' min = '0'><br><br>
+                <label for='samplesHighBucketAuto'>Samples in High Bucket: </label>
+                <input id='samplesHighBucketAuto' name='samplesHighBucketAuto' value='0' type='number' min='0'><br><br>
 
-                <label for = 'samplesLowBucketAuto'>Samples in Low Bucket: </label>
-                <input id = 'samplesLowBucketAuto' name = 'samplesLowBucketAuto' value = '0' type = 'number' min = '0'><br><br>
+                <label for='samplesLowBucketAuto'>Samples in Low Bucket: </label>
+                <input id='samplesLowBucketAuto' name='samplesLowBucketAuto' value='0' type='number' min='0'><br><br>
 
-                <label for = 'NetZoneAuto'>Samples in Net Zone: </label>
-                <input id = 'NetZoneAuto' name = 'NetZoneAuto' value = '0' type = 'number' min = '0'><br><br>
+                <label for='NetZoneAuto'>Samples in Net Zone: </label>
+                <input id='NetZoneAuto' name='NetZoneAuto' value='0' type='number' min='0'><br><br>
 
-                <label for = 'HighRungAuto'>Specimen in High Rung: </label>
-                <input id = 'HighRungAuto' name = 'HighRungAuto' value = '0' type = 'number' min = '0'><br><br>
+                <label for='HighRungAuto'>Specimen in High Rung: </label>
+                <input id='HighRungAuto' name='HighRungAuto' value='0' type='number' min='0'><br><br>
 
-                <label for = 'LowRungAuto'>Specimen in Low Rung: </label>
-                <input id = 'LowRungAuto' name = 'LowRungAuto' value = '0' type = 'number' min = '0'><br><br>
-
-
-
-    
-  </div>
-  <div>
-    <input type="radio" id="no_park" name="park" value="0" checked />
-    <label for="no_park">No Park (0 points)</label>
-  </div>
+                <label for='LowRungAuto'>Specimen in Low Rung: </label>
+                <input id='LowRungAuto' name='LowRungAuto' value='0' type='number' min='0'><br><br>
+            </div>
             <div>
-    <input type="radio" id="observation_zone_park" name="park" value="0" />
-    <label for="observation_zone_park">Observation Zone (3 points)</label>
-  </div>
+                <input type="radio" id="no_park" name="park" value="0" checked />
+                <label for="no_park">No Park (0 points)</label>
+            </div>
             <div>
-    <input type="radio" id="level1park" name="park" value="3" />
-    <label for="level1park">Submersible w Level 1 climb (3 points)</label>
-  </div>
-        </fieldset>
-<br>
-
-        <fieldset>
-            <legend>Teleop & Endgame (Don't Include Points from Autonomous)</legend>
-            <label for = 'samplesHighBucket'>Samples in High Bucket: </label>
-                <input id = 'samplesHighBucket' name = 'samplesHighBucket' value = '0' type = 'number' min = '0'><br><br>
-
-                <label for = 'samplesLowBucket'>Samples in Low Bucket: </label>
-                <input id = 'samplesLowBucket' name = 'samplesLowBucket' value = '0' type = 'number' min = '0'><br><br>
-
-                <label for = 'NetZone'>Samples in Net Zone: </label>
-                <input id = 'NetZone' name = 'NetZone' value = '0' type = 'number' min = '0'><br><br>
-
-                <label for = 'HighRung'>Specimen in High Rung: </label>
-                <input id = 'HighRung' name = 'HighRung' value = '0' type = 'number' min = '0'><br><br>
-
-                <label for = 'LowRung'>Specimen in Low Rung: </label>
-                <input id = 'LowRung' name = 'LowRung' value = '0' type = 'number' min = '0'><br><br>
-
-
-
-                <div>
-                    <input type="radio" id="no_climb" name="climb" value="0" checked />
-                    <label for="no_climb">No Climb (0 points)</label>
-                  </div>
-                  <div>
-                    <input type="radio" id="parked" name="climb" value="3"  />
-                    <label for="parked">Parked in Observation Zone (3 points)</label>
-                  </div>
-                            <div>
-                    <input type="radio" id="level1_climb" name="climb" value="3" />
-                    <label for="level1_climb">Level 1 Climb (3 points)</label>
-                  </div>
-                            <div>
-                    <input type="radio" id="level2_climb" name="climb" value="15" />
-                    <label for="level2_climb">Level 2 Climb (15 points)</label>
-                  </div>
-
-                  <div>
-                    <input type="radio" id="level3_climb" name="climb" value="30" />
-                    <label for="level3_climb">Level 3 Climb (30 points)</label>
-                  </div>
-                
-                
+                <input type="radio" id="observation_zone_park" name="park" value="0" />
+                <label for="observation_zone_park">Observation Zone (3 points)</label>
+            </div>
+            <div>
+                <input type="radio" id="level1park" name="park" value="3" />
+                <label for="level1park">Submersible w Level 1 climb (3 points)</label>
+            </div>
         </fieldset>
         <br>
 
+        <fieldset>
+            <legend>Teleop & Endgame (Don't Include Points from Autonomous)</legend>
+            <label for='samplesHighBucket'>Samples in High Bucket: </label>
+            <input id='samplesHighBucket' name='samplesHighBucket' value='0' type='number' min='0'><br><br>
+
+            <label for='samplesLowBucket'>Samples in Low Bucket: </label>
+            <input id='samplesLowBucket' name='samplesLowBucket' value='0' type='number' min='0'><br><br>
+
+            <label for='NetZone'>Samples in Net Zone: </label>
+            <input id='NetZone' name='NetZone' value='0' type='number' min='0'><br><br>
+
+            <label for='HighRung'>Specimen in High Rung: </label>
+            <input id='HighRung' name='HighRung' value='0' type='number' min='0'><br><br>
+
+            <label for='LowRung'>Specimen in Low Rung: </label>
+            <input id='LowRung' name='LowRung' value='0' type='number' min='0'><br><br>
+
+            <div>
+                <input type="radio" id="no_climb" name="climb" value="0" checked />
+                <label for="no_climb">No Climb (0 points)</label>
+            </div>
+            <div>
+                <input type="radio" id="parked" name="climb" value="3" />
+                <label for="parked">Parked in Observation Zone (3 points)</label>
+            </div>
+            <div>
+                <input type="radio" id="level1_climb" name="climb" value="3" />
+                <label for="level1_climb">Level 1 Climb (3 points)</label>
+            </div>
+            <div>
+                <input type="radio" id="level2_climb" name="climb" value="15" />
+                <label for="level2_climb">Level 2 Climb (15 points)</label>
+            </div>
+            <div>
+                <input type="radio" id="level3_climb" name="climb" value="30" />
+                <label for="level3_climb">Level 3 Climb (30 points)</label>
+            </div>
+        </fieldset>
+        <br>
+        <button id='appendData'>Add Data</button>
         <button id="openModalBtn">Show Chart</button>
-    
-
-
-
-
-
-
-
+    </div>
 
     <div id="chartModal" class="modal">
         <div class="modal-content">
@@ -114,74 +111,138 @@
         </div>
     </div>
 
-
-
+    <!-- Socket and Chart Scripts -->
     <script>
-        // Get Elements
-        const modal = document.getElementById("chartModal");
-        const openModalBtn = document.getElementById("openModalBtn");
-        const closeModalBtn = document.getElementById("closeModalBtn");
-        let chartInstance = null;
+        var socket = io();
+        
 
-        // Open Modal
-        openModalBtn.addEventListener("click", function () {
-            modal.style.display = "block";
+        // Join room functionalitya
+        document.getElementById('join-room').onclick = function(){
+          socket.emit('join', {'room': document.getElementById('join-room-input').value});
+          document.getElementById('join').hidden = true;
+          document.getElementById('record').hidden = false;
+          socket.emit('data-request', { room: document.getElementById('join-room-input').value });
+          
+        };
 
-            // Destroy previous chart instance if exists
-            if (chartInstance) {
-                chartInstance.destroy();
+        // Append data functionality
+        document.getElementById('appendData').onclick = function(){
+          socket.emit('data', addToJson());
+        };
+
+        // Update recordedData when new data is received
+        socket.on('message', function(msg){
+          try{recordedData = JSON.parse(msg);}
+          catch{recordedData = msg;}
+          console.log(recordedData);
+        });
+
+        socket.on('data-response', ()=>{
+            socket.emit('data', recordedData)
+        })
+
+        // Determine bar color based on priority
+        function getColor(priority) {
+            if (priority === "specimen") return "rgba(0, 0, 255, 0.5)";  // Blue
+            if (priority === "samples") return "rgba(255, 255, 0, 0.5)";   // Yellow
+            return "rgba(0, 0, 255, 0.5)";  
+        }
+
+        // Build the Chart.js bar graph
+        function buildChart() {
+        // Prepare arrays for labels, data, and colors
+        const labels = [];
+        const dataPoints = [];
+        const backgroundColors = [];
+
+        // Iterate through recordedData structured as: team_number -> match_number -> {final_score, priority}
+        for (let team in recordedData) {
+            let totalScore = 0;
+            let count = 0;
+            let representativePriority = ""; // We'll use the first match's priority for color
+            for (let match in recordedData[team]) {
+                const matchData = recordedData[team][match];
+                totalScore += matchData.final_score;
+                count++;
+                if (!representativePriority) {
+                    representativePriority = matchData.priority;
+                }
             }
+            const averageScore = count ? totalScore / count : 0;
+            labels.push(`Team ${team}`);
+            dataPoints.push(averageScore);
+            backgroundColors.push(getColor(representativePriority));
+        }
 
-            // Create Chart
-            const ctx = document.getElementById('myChart').getContext('2d');
-            chartInstance = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                    datasets: [{
-                        label: 'AVG Points',
-                        data: [12, 19, 3, 5, 2, 3],
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.5)',
-                            'rgba(54, 162, 235, 0.5)',
-                            'rgba(255, 206, 86, 0.5)',
-                            'rgba(75, 192, 192, 0.5)',
-                            'rgba(153, 102, 255, 0.5)',
-                            'rgba(255, 159, 64, 0.5)'
-                        ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
+        // Destroy previous chart instance if it exists
+        if (window.myChartInstance) {
+            window.myChartInstance.destroy();
+        }
+
+        const ctx = document.getElementById("myChart").getContext("2d");
+        window.myChartInstance = new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Team OPR',
+                    data: dataPoints,
+                    backgroundColor: backgroundColors,
+                    borderColor: backgroundColors,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: "OPR"
+                    },
+                    legend: {
+                        display: false
+                    }
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    scales: {
-                        y: { beginAtZero: true }
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: "Team"
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: "OPR"
+                        }
                     }
                 }
-            });
-        });
-
-        // Close Modal
-        closeModalBtn.addEventListener("click", function () {
-            modal.style.display = "none";
-        });
-
-        // Close Modal When Clicking Outside
-        window.addEventListener("click", function (event) {
-            if (event.target === modal) {
-                modal.style.display = "none";
             }
         });
+    }
+
+        // Modal handling
+        var modal = document.getElementById("chartModal");
+        var openModalBtn = document.getElementById("openModalBtn");
+        var closeModalBtn = document.getElementById("closeModalBtn");
+
+        openModalBtn.onclick = function() {
+            modal.style.display = "block";
+            buildChart();
+        };
+
+        closeModalBtn.onclick = function() {
+            modal.style.display = "none";
+        };
+
+        // Close modal when clicking outside of modal content
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        };
     </script>
-    <script src = '{{ url_for('static', filename='scouting.js') }}'></script>
+    <script src="{{ url_for('static', filename='scouting.js') }}"></script>
 </body>
 </html>
